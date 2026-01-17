@@ -3,6 +3,9 @@ import ProductSlider from "@/components/ProductSlider";
 import Hero from "@/components/Hero"; // <--- Import the new component
 import { Database } from "@/types/database.types";
 
+// Force dynamic rendering so the admin panel updates show immediately
+export const revalidate = 0;
+
 export default async function Home() {
 
   // 1. Fetch Company Settings (Hero Data)

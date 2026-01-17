@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+:root {
+  --jungle-teal: #6b9080ff;
+  --muted-teal: #a4c3b2ff;
+  --frozen-water: #cce3deff;
+  --azure-mist: #eaf4f4ff;
+  --mint-cream: #f6fff8ff;
+}
+
+body {
+  background-color: var(--muted-teal);
+  font-family: "Helvetica Neue", sans-serif;
+  color: var(--frozen-water);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--mint-cream);
+}
+
+* {
+  border-color: var(--jungle-teal);
+}

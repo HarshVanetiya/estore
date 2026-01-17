@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google"; // Or whatever font you chose
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { supabase } from "@/lib/supabase";
 import { Database } from "@/types/database.types";
-
-const font = Poppins({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
 type Settings = Database['public']['Tables']['company_settings']['Row'];
 
@@ -14,6 +11,8 @@ export const metadata: Metadata = {
   title: "Next.js E-commerce",
   description: "Powered by Supabase",
 };
+
+export const revalidate = 0;
 
 export default async function RootLayout({
   children,
@@ -27,7 +26,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${font.className} antialiased bg-gray-50 text-gray-900 flex flex-col min-h-screen`}>
+      <body className={`antialiased text-gray-900 flex flex-col min-h-screen`}>
         {/* Simple Navbar without the complex Admin checks */}
         <Navbar siteName={siteName} />
 
