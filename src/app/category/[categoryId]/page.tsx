@@ -76,15 +76,28 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                 {/* Subcategories */}
                 {subcategories && subcategories.length > 0 && (
                     <div className="mb-12">
-                        <h2 className="text-2xl font-semibold text-gray-900 mb-6">Browse by Subcategory</h2>
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="w-1 h-6 bg-gradient-to-b from-[#f9dc5c] to-[#fae588] rounded-full" />
+                            <h2 className="text-2xl font-semibold text-gray-900">Browse by Subcategory</h2>
+                        </div>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {subcategories.map(sub => (
+                            {subcategories.map((sub, index) => (
                                 <Link
                                     key={sub.id}
                                     href={`/category/${categoryId}/sub/${sub.id}`}
-                                    className="p-6 rounded-xl border-2 border-[#f9dc5c] bg-white/50 backdrop-blur-sm hover:bg-[#f9dc5c]/20 transition-all duration-300 hover:shadow-lg hover:shadow-[#f9dc5c]/20 hover:scale-105"
+                                    className="group relative p-6 rounded-2xl border border-gray-200 bg-white shadow-[0_8px_24px_rgba(107,114,128,0.12)] hover:shadow-[0_16px_40px_rgba(107,114,128,0.2)] hover:border-[#f9dc5c] transition-all duration-500 hover:-translate-y-1 active:scale-95"
+                                    style={{
+                                        animationDelay: `${index * 50}ms`,
+                                        animation: 'fade-in-up 0.5s ease-out forwards'
+                                    }}
                                 >
-                                    <h3 className="font-semibold text-gray-900">{sub.name}</h3>
+                                    {/* Gold glow on hover */}
+                                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                                        <div className="absolute inset-0 rounded-2xl shadow-[0_0_20px_rgba(249,220,92,0.3)]" />
+                                    </div>
+                                    <h3 className="font-semibold text-gray-800 group-hover:text-[#f9dc5c] transition-colors duration-300 relative z-10">
+                                        {sub.name}
+                                    </h3>
                                 </Link>
                             ))}
                         </div>
@@ -93,26 +106,45 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
                 {/* Products */}
                 <div>
-                    <h2 className="text-2xl font-semibold text-gray-900 mb-6">All Products</h2>
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="w-1 h-6 bg-gradient-to-b from-[#f9dc5c] to-[#fae588] rounded-full" />
+                        <h2 className="text-2xl font-semibold text-gray-900">All Products</h2>
+                    </div>
                     {products && products.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                            {products.map(product => (
+                            {products.map((product, index) => (
                                 <div
                                     key={product.id}
-                                    className="rounded-xl border-2 border-[#f9dc5c] bg-white/70 backdrop-blur-sm overflow-hidden hover:shadow-lg hover:shadow-[#f9dc5c]/20 transition-all duration-300 hover:scale-105"
+                                    className="group rounded-2xl border border-gray-200 bg-white overflow-hidden shadow-[0_8px_24px_rgba(107,114,128,0.12)] hover:shadow-[0_16px_40px_rgba(107,114,128,0.2)] hover:border-[#f9dc5c] transition-all duration-500 hover:-translate-y-1"
+                                    style={{
+                                        animationDelay: `${index * 50}ms`,
+                                        animation: 'fade-in-up 0.5s ease-out forwards'
+                                    }}
                                 >
                                     {product.images && product.images[0] && (
-                                        <div className="aspect-square bg-[#fae588]/20">
+                                        <div className="relative aspect-square bg-white overflow-hidden">
+                                            {/* Gold border glow on hover */}
+                                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10">
+                                                <div className="absolute inset-0 border-2 border-[#f9dc5c] shadow-[0_0_20px_rgba(249,220,92,0.4)]" />
+                                            </div>
+
+                                            {/* Gradient overlay on hover */}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-[1]" />
+
                                             <img
                                                 src={product.images[0]}
                                                 alt={product.title}
-                                                className="w-full h-full object-cover"
+                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                                             />
                                         </div>
                                     )}
                                     <div className="p-4">
-                                        <h3 className="font-semibold text-gray-900 mb-2">{product.title}</h3>
-                                        <p className="text-2xl font-bold text-[#f9dc5c]">${product.price}</p>
+                                        <h3 className="font-semibold text-gray-800 mb-2 group-hover:text-[#f9dc5c] transition-colors duration-300">
+                                            {product.title}
+                                        </h3>
+                                        <p className="text-2xl font-bold text-[#f9dc5c]">
+                                            ₹{product.price}
+                                        </p>
                                     </div>
                                 </div>
                             ))}

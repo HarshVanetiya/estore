@@ -47,7 +47,7 @@ export default async function Home() {
   });
 
   return (
-    <main className="min-h-screen pb-20">
+    <main className="min-h-screen pb-20 bg-[#fdf8e1]">
 
       {/* 4. The Real Hero Section */}
       <Hero settings={settings} />
