@@ -9,6 +9,12 @@ export interface SubCategory {
     category_id: string;
 }
 
+interface Category {
+    id: string;
+    name: string;
+    image_url: string | null;
+}
+
 export interface CategoryWithSubs {
     id: string;
     name: string;
@@ -30,7 +36,7 @@ export function useCategories() {
                 const { data: categoriesData, error: categoriesError } = await supabase
                     .from('categories')
                     .select('*')
-                    .order('name');
+                    .order('name') as { data: Category[] | null; error: any };
 
                 if (categoriesError) throw categoriesError;
 
@@ -38,7 +44,7 @@ export function useCategories() {
                 const { data: subCategoriesData, error: subCategoriesError } = await supabase
                     .from('sub_categories')
                     .select('*')
-                    .order('name');
+                    .order('name') as { data: SubCategory[] | null; error: any };
 
                 if (subCategoriesError) throw subCategoriesError;
 

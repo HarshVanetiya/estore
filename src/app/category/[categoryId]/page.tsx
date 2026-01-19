@@ -1,6 +1,22 @@
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { SubCategory } from '@/hooks/useCategories';
+
+interface Category {
+    id: string;
+    name: string;
+    image_url?: string | null;
+}
+
+interface Product {
+    id: string;
+    title: string;
+    price: number;
+    images?: string[] | null;
+    sub_category_id: string;
+    created_at: string;
+}
 
 interface CategoryPageProps {
     params: {
@@ -16,14 +32,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         .from('categories')
         .select('*')
         .eq('id', categoryId)
-        .single();
+        .single() as { data: Category | null };
 
     // Fetch subcategories
     const { data: subcategories } = await supabase
         .from('sub_categories')
         .select('*')
         .eq('category_id', categoryId)
-        .order('name');
+        .order('name') as { data: SubCategory[] | null };
 
     // Fetch products in this category (through subcategories)
     const subcategoryIds = subcategories?.map(sub => sub.id) || [];
@@ -31,7 +47,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         .from('products')
         .select('*')
         .in('sub_category_id', subcategoryIds)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false }) as { data: Product[] | null };
 
     if (!category) {
         return (

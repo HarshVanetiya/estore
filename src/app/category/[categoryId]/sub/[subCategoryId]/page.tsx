@@ -1,6 +1,25 @@
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { SubCategory } from '@/hooks/useCategories';
+
+interface Category {
+    id: string;
+    name: string;
+    image_url?: string | null;
+}
+
+interface Product {
+    id: string;
+    title: string;
+    price: number;
+    images?: string[] | null;
+    description?: string | null;
+    discount_percent?: number | null;
+    inventory?: number | null;
+    sub_category_id: string;
+    created_at: string;
+}
 
 interface SubCategoryPageProps {
     params: {
@@ -17,21 +36,21 @@ export default async function SubCategoryPage({ params }: SubCategoryPageProps) 
         .from('categories')
         .select('*')
         .eq('id', categoryId)
-        .single();
+        .single() as { data: Category | null };
 
     // Fetch subcategory details
     const { data: subcategory } = await supabase
         .from('sub_categories')
         .select('*')
         .eq('id', subCategoryId)
-        .single();
+        .single() as { data: SubCategory | null };
 
     // Fetch products in this subcategory
     const { data: products } = await supabase
         .from('products')
         .select('*')
         .eq('sub_category_id', subCategoryId)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false }) as { data: Product[] | null };
 
     if (!category || !subcategory) {
         return (
@@ -96,7 +115,7 @@ export default async function SubCategoryPage({ params }: SubCategoryPageProps) 
                                                 </span>
                                             )}
                                         </div>
-                                        {product.inventory !== undefined && (
+                                        {product.inventory != null && (
                                             <p className="text-xs text-gray-500 mt-2">
                                                 {product.inventory > 0 ? `${product.inventory} in stock` : 'Out of stock'}
                                             </p>
