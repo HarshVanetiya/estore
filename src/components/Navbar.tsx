@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { ShoppingCart, Search, Menu, ArrowLeft, ChevronDown, X, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
@@ -13,6 +13,8 @@ interface NavbarProps {
 
 export default function Navbar({ siteName }: NavbarProps) {
     const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
     const { categories, loading } = useCategories();
     const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -51,10 +53,13 @@ export default function Navbar({ siteName }: NavbarProps) {
                     {/* Desktop Categories Navigation */}
                     <div className="hidden md:flex gap-1 text-sm font-medium">
                         <Link
-                            href="/"
-                            className="px-4 py-2 rounded-lg hover:bg-[#f9dc5c]/40 text-gray-800 hover:text-gray-900 transition-all duration-300"
+                            href="/products"
+                            className={`px-4 py-2 rounded-lg transition-all duration-300 ${pathname === '/products' && !searchParams.get('category')
+                                ? 'bg-royal-gold text-neutral-900 shadow-md'
+                                : 'text-gray-800 hover:bg-[#f9dc5c]/40 hover:text-gray-900'
+                                }`}
                         >
-                            Home
+                            All Products
                         </Link>
 
                         {loading ? (
@@ -71,12 +76,18 @@ export default function Navbar({ siteName }: NavbarProps) {
                                     onMouseLeave={() => setHoveredCategory(null)}
                                 >
                                     <Link
-                                        href={`/category/${category.id}`}
-                                        className="flex items-center gap-1 px-4 py-2 rounded-lg hover:bg-[#f9dc5c]/40 text-gray-800 hover:text-gray-900 transition-all duration-300 group"
+                                        href={`/products?category=${category.id}`}
+                                        className={`flex items-center gap-1 px-4 py-2 rounded-lg transition-all duration-300 group ${(pathname === '/products' && searchParams.get('category') === category.id)
+                                                ? 'bg-royal-gold text-neutral-900 shadow-md'
+                                                : 'text-gray-800 hover:bg-[#f9dc5c]/40 hover:text-gray-900'
+                                            }`}
                                     >
                                         {category.name}
                                         {category.subcategories.length > 0 && (
-                                            <ChevronDown className="h-4 w-4 group-hover:rotate-180 transition-transform duration-300" />
+                                            <ChevronDown className={`h-4 w-4 transition-transform duration-300 group-hover:rotate-180 ${(pathname === '/products' && searchParams.get('category') === category.id)
+                                                    ? 'text-neutral-900'
+                                                    : ''
+                                                }`} />
                                         )}
                                     </Link>
 
@@ -99,7 +110,7 @@ export default function Navbar({ siteName }: NavbarProps) {
                                                             transition={{ delay: subIndex * 0.05 }}
                                                         >
                                                             <Link
-                                                                href={`/category/${category.id}/sub/${subCategory.id}`}
+                                                                href={`/products?category=${category.id}&sub=${subCategory.id}`}
                                                                 className="block px-4 py-2.5 text-gray-800 hover:bg-[#f9dc5c]/50 hover:text-gray-900 transition-all duration-200 hover:pl-6"
                                                             >
                                                                 {subCategory.name}
@@ -186,11 +197,14 @@ export default function Navbar({ siteName }: NavbarProps) {
                             <div className="p-4">
                                 {/* Home Link */}
                                 <Link
-                                    href="/"
+                                    href="/products"
                                     onClick={() => setMobileMenuOpen(false)}
-                                    className="block px-4 py-3 rounded-lg hover:bg-[#f9dc5c]/40 text-gray-800 hover:text-gray-900 font-medium transition-all duration-300 mb-2"
+                                    className={`block px-4 py-3 rounded-lg font-medium transition-all duration-300 mb-2 ${pathname === '/products' && !searchParams.get('category')
+                                        ? 'bg-royal-gold text-neutral-900'
+                                        : 'text-gray-800 hover:bg-[#f9dc5c]/40 hover:text-gray-900'
+                                        }`}
                                 >
-                                    Home
+                                    All Products
                                 </Link>
 
                                 {/* Categories Accordion */}
@@ -209,9 +223,12 @@ export default function Navbar({ siteName }: NavbarProps) {
                                                 {/* Category Header */}
                                                 <div className="flex items-center justify-between">
                                                     <Link
-                                                        href={`/category/${category.id}`}
+                                                        href={`/products?category=${category.id}`}
                                                         onClick={() => setMobileMenuOpen(false)}
-                                                        className="flex-1 px-4 py-3 font-medium text-gray-900 hover:bg-[#f9dc5c]/20 transition-all duration-300"
+                                                        className={`flex-1 px-4 py-3 font-medium transition-all duration-300 ${(pathname === '/products' && searchParams.get('category') === category.id)
+                                                                ? 'bg-royal-gold text-neutral-900'
+                                                                : 'text-gray-900 hover:bg-[#f9dc5c]/20'
+                                                            }`}
                                                     >
                                                         {category.name}
                                                     </Link>
@@ -250,7 +267,7 @@ export default function Navbar({ siteName }: NavbarProps) {
                                                                         transition={{ delay: subIndex * 0.05 }}
                                                                     >
                                                                         <Link
-                                                                            href={`/category/${category.id}/sub/${subCategory.id}`}
+                                                                            href={`/products?category=${category.id}&sub=${subCategory.id}`}
                                                                             onClick={() => setMobileMenuOpen(false)}
                                                                             className="block px-8 py-2.5 text-sm text-gray-700 hover:bg-[#f9dc5c]/30 hover:text-gray-900 transition-all duration-200"
                                                                         >

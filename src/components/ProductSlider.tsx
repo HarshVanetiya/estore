@@ -8,15 +8,18 @@ import { motion } from 'framer-motion'
 import { Database } from '@/types/database.types'
 import { ChevronLeft, ChevronRight, ShoppingCart, Sparkles } from 'lucide-react'
 
+import ProductCard from './ProductCard'
+
 // Helper type for our Product
 type Product = Database['public']['Tables']['products']['Row']
 
 interface ProductSliderProps {
     title: string
+    categoryId?: string
     products: Product[]
 }
 
-export default function ProductSlider({ title, products }: ProductSliderProps) {
+export default function ProductSlider({ title, categoryId, products }: ProductSliderProps) {
     // Initialize Embla
     const [emblaRef, emblaApi] = useEmblaCarousel({
         loop: true,
@@ -59,7 +62,7 @@ export default function ProductSlider({ title, products }: ProductSliderProps) {
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900">{title}</h2>
                 </div>
                 <Link
-                    href={`/category/${title}`}
+                    href={categoryId ? `/products?category=${categoryId}` : '/products'}
                     className="group/link text-sm font-semibold text-gray-600 hover:text-[#f9dc5c] flex items-center gap-1 transition-all duration-300"
                 >
                     View All
@@ -72,66 +75,14 @@ export default function ProductSlider({ title, products }: ProductSliderProps) {
 
             {/* Embla Viewport */}
             <div className="overflow-hidden px-4 md:px-10" ref={emblaRef}>
-                <div className="flex gap-6">
+                <div className="flex gap-6 pb-4">
                     {products.map((product, index) => (
-                        <motion.div
+                        <div
                             key={product.id}
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{
-                                duration: 0.5,
-                                delay: index * 0.1,
-                                ease: "easeOut"
-                            }}
-                            className="flex-[0_0_70%] sm:flex-[0_0_45%] md:flex-[0_0_30%] lg:flex-[0_0_22%] min-w-0"
+                            className="flex-[0_0_75%] sm:flex-[0_0_45%] md:flex-[0_0_30%] lg:flex-[0_0_22%] min-w-0"
                         >
-                            <Link href={`/product/${product.id}`} className="block group/card h-full bg-white rounded-2xl overflow-hidden border-2 border-[#fae588] shadow-[0_4px_12px_rgba(249,220,92,0.25)] hover:shadow-[0_12px_32px_rgba(249,220,92,0.45)] hover:border-[#f9dc5c] transition-all duration-300 hover:-translate-y-2">
-                                {/* Image Container */}
-                                <div className="relative aspect-[4/5] bg-[#fcefb4] overflow-hidden">
-                                    {product.images && product.images[0] ? (
-                                        <Image
-                                            src={product.images[0]}
-                                            alt={product.title}
-                                            fill
-                                            className="object-cover group-hover/card:scale-105 transition-transform duration-700 ease-out"
-                                            sizes="(max-width: 768px) 100vw, 25vw"
-                                        />
-                                    ) : (
-                                        <div className="flex h-full items-center justify-center text-[#f9dc5c] bg-[#fcefb4]">
-                                            No Image
-                                        </div>
-                                    )}
-
-                                    {/* Discount Badge */}
-                                    {product.discount_percent != null && product.discount_percent > 0 && (
-                                        <div className="absolute top-3 left-3 z-[2]">
-                                            <div className="bg-[#f9dc5c] text-gray-900 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider shadow-sm">
-                                                -{product.discount_percent}%
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Details Area */}
-                                <div className="p-4 space-y-2">
-                                    <h3 className="font-medium text-base text-gray-900 line-clamp-1 group-hover/card:text-[#f9dc5c] transition-colors duration-300">
-                                        {product.title}
-                                    </h3>
-
-                                    <div className="flex items-baseline gap-2">
-                                        <div className="font-bold text-lg text-[#f9dc5c]">
-                                            ₹{product.price}
-                                        </div>
-                                        {product.discount_percent != null && product.discount_percent > 0 && (
-                                            <div className="text-xs text-gray-400 line-through">
-                                                ₹{(product.price / (1 - product.discount_percent / 100)).toFixed(0)}
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </Link>
-                        </motion.div>
+                            <ProductCard product={product} index={index} />
+                        </div>
                     ))}
                 </div>
             </div>

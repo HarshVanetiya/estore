@@ -12,6 +12,12 @@
 @theme {
   --font-sans: var(--font-inter);
   --font-serif: var(--font-playfair);
+
+  /* Brand Colors */
+  --color-royal-gold: var(--royal-gold);
+  --color-jasmine: var(--jasmine);
+  --color-vanilla-custard: var(--vanilla-custard);
+  --color-cornsilk: var(--cornsilk);
 }
 
 * {
@@ -28,9 +34,21 @@ body {
   color: #111827; /* Gray 900 */
 }
 
+/* Global Clickable Feel */
+a, button, [role="button"], summary {
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(1.05);
+  transition: all 0.2s ease;
+}
+
 h1, h2, h3, h4, h5, h6 {
   color: #111827; /* Gray 900 */
   font-family: var(--font-playfair), serif;
+  /* Allow Tailwind to override color */
+  border-color: inherit;
 }
 
 /* Premium Animation Keyframes */

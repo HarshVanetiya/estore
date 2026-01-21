@@ -37,12 +37,13 @@ export default async function Home() {
   const settings = settingsResult.data;
   const rawCategories = categoriesResult.data || [];
 
-  // 3. Flatten Data for Sliders
+  // 3. Flatten Data for Sliders and take first 8
   const ottData = (rawCategories as any[]).map((cat) => {
     const allProducts = cat.sub_categories.flatMap((sub: any) => sub.products);
     return {
+      categoryId: cat.id,
       categoryName: cat.name,
-      products: allProducts
+      products: allProducts.slice(0, 8)
     };
   });
 
@@ -58,6 +59,7 @@ export default async function Home() {
           section.products.length > 0 && (
             <ProductSlider
               key={index}
+              categoryId={section.categoryId}
               title={section.categoryName}
               products={section.products}
             />

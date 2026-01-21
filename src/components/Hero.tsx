@@ -46,7 +46,7 @@ export default function Hero({ settings }: { settings: Settings | null }) {
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-4 sm:mb-6"
+                    className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-4 sm:mb-6 shadow-xl drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]"
                 >
                     <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-[#f9dc5c]" />
                     <span className="text-xs sm:text-sm font-semibold text-white/90 tracking-wide uppercase">Online Store</span>
@@ -59,14 +59,14 @@ export default function Hero({ settings }: { settings: Settings | null }) {
                     transition={{ duration: 0.8, delay: 0.2 }}
                     className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-3 sm:mb-4 leading-[1.05] tracking-tight"
                     style={{
-                        textShadow: '0 8px 30px rgba(0, 0, 0, 0.35)'
+                        textShadow: '0 10px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 0, 0, 0.3)'
                     }}
                 >
                     {settings.hero_title || "Big Deals. Small Prices."}
                     <span
                         className="block text-[#f9dc5c] mt-1 sm:mt-2"
                         style={{
-                            textShadow: '0 6px 20px rgba(0, 0, 0, 0.25)'
+                            textShadow: '0 6px 25px rgba(0, 0, 0, 0.45), 0 0 15px rgba(0, 0, 0, 0.2)'
                         }}
                     >
                         Crafted For You
@@ -80,7 +80,7 @@ export default function Hero({ settings }: { settings: Settings | null }) {
                     transition={{ duration: 0.8, delay: 0.4 }}
                     className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 md:mb-10 max-w-[520px] mx-auto leading-relaxed font-normal"
                     style={{
-                        textShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
+                        textShadow: '0 4px 15px rgba(0, 0, 0, 0.8)'
                     }}
                 >
                     {settings.hero_subtitle || "Curated products, transparent pricing, and fast delivery — built for modern customers."}
@@ -93,7 +93,7 @@ export default function Hero({ settings }: { settings: Settings | null }) {
                     transition={{ duration: 0.8, delay: 0.6 }}
                 >
                     <Link
-                        href="/category"
+                        href="/products"
                         className="group inline-flex items-center gap-2 sm:gap-3 bg-black/60 backdrop-blur-md text-[#f9dc5c] px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-4 rounded-full font-bold text-base sm:text-lg border-2 border-[#f9dc5c] hover:bg-[#f9dc5c] hover:text-gray-900 transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-2xl hover:shadow-[#f9dc5c]/50"
                     >
                         <span className="tracking-wide">Explore Collection</span>

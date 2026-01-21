@@ -10,6 +10,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
 
 type Settings = Database['public']['Tables']['company_settings']['Row'];
+type Category = Database['public']['Tables']['categories']['Row'];
 
 export const metadata: Metadata = {
   title: "Next.js E-commerce",
@@ -24,8 +25,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const { data } = await supabase.from('company_settings').select('*').single();
-  const settings = data as Settings | null;
+  const { data: settingsData } = await supabase.from('company_settings').select('*').single();
+  const settings = settingsData as Settings | null;
+
+  const { data: categoriesData } = await supabase.from('categories').select('*').order('name');
+  const categories = categoriesData as Category[] | [];
+
   const siteName = settings?.site_name || "Store Name";
 
   return (
@@ -38,7 +43,7 @@ export default async function RootLayout({
           {children}
         </main>
 
-        <Footer settings={settings} />
+        <Footer settings={settings} categories={categories} />
       </body>
     </html>
   );
